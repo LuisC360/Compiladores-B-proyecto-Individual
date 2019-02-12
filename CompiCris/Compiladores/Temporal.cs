@@ -10,11 +10,13 @@ namespace Compiladores
     {
         public String id;
         public String valor;
+        public int idTemporal;
 
-        public Temporal(String id, String val)
+        public Temporal(String id, String val, int idt)
         {
             this.id = id;
             this.valor = val;
+            this.idTemporal = idt;
         }
     }
 }

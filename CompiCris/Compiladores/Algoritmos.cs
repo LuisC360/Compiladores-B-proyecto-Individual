@@ -48,6 +48,12 @@ namespace Compiladores
 
         // Todos los valores temporales para los cuadruplos serán almacenados en esta lista.
         public List<Temporal> temporales;
+
+        // Identificador de cuadruplos
+        public int idCuadruplo = 0;
+
+        public int idSimbolo = 0;
+        public int idTemporal = 0;
         
         Nodo RaizTemp;
         public int numBloque;
@@ -1312,7 +1318,8 @@ namespace Compiladores
                     int y2 = int.Parse((string)node.izq.izq.izq.izq.izq.info);
 
                     PilaElementosVentana.Add(new ElementoVentana(nombreTb, x1, y1, x2, y2));
-                    Simbolos.Add(new Simbolo(nombreTb, "\0"));
+                    Simbolos.Add(new Simbolo(nombreTb, "\0", idSimbolo));
+                    idSimbolo++;
                     break;
                 case "Click":
                     int u = 1;
@@ -1362,58 +1369,91 @@ namespace Compiladores
                                     tempCount++;
                                     String temp4 = temp + tempCount.ToString();
 
-                                    Cuadruplos.Add(new Cuadruplo(OPERANDO6, OPERANDO8, OPERANDO9, temp4));
-                                    Cuadruplos.Add(new Cuadruplo(OPERANDO5, temp4, OPERANDO7, temp3));
-                                    Cuadruplos.Add(new Cuadruplo(OPERANDO2, temp3, OPERANDO4, temp2));
-                                    Cuadruplos.Add(new Cuadruplo(OPERANDO1, OPERANDO3, temp2, tempActual));
-                                    Cuadruplos.Add(new Cuadruplo(OPERADOR, tempActual, "", RESULTADO));
+                                    Cuadruplos.Add(new Cuadruplo(OPERANDO6, OPERANDO8, OPERANDO9, temp4, idCuadruplo));
+                                    idCuadruplo++;
+                                    Cuadruplos.Add(new Cuadruplo(OPERANDO5, temp4, OPERANDO7, temp3, idCuadruplo));
+                                    idCuadruplo++;
+                                    Cuadruplos.Add(new Cuadruplo(OPERANDO2, temp3, OPERANDO4, temp2, idCuadruplo));
+                                    idCuadruplo++;
+                                    Cuadruplos.Add(new Cuadruplo(OPERANDO1, OPERANDO3, temp2, tempActual, idCuadruplo));
+                                    idCuadruplo++;
+                                    Cuadruplos.Add(new Cuadruplo(OPERADOR, tempActual, "", RESULTADO, idCuadruplo));
+                                    idCuadruplo++;
 
-                                    temporales.Add(new Temporal(tempActual, "0"));
-                                    temporales.Add(new Temporal(temp2, "0"));
-                                    temporales.Add(new Temporal(temp3, "0"));
-                                    temporales.Add(new Temporal(temp4, "0"));
+                                    temporales.Add(new Temporal(tempActual, "0", idTemporal));
+                                    idTemporal++;
+                                    temporales.Add(new Temporal(temp2, "0", idTemporal));
+                                    idTemporal++;
+                                    temporales.Add(new Temporal(temp3, "0", idTemporal));
+                                    idTemporal++;
+                                    temporales.Add(new Temporal(temp4, "0", idTemporal));
+                                    idTemporal++;
 
                                     tempCount++;
                                     
-                                    Simbolos.Add(new Simbolo(RESULTADO, valorInicial.ToString()));
-                                    Simbolos.Add(new Simbolo(tempActual, valorInicial.ToString()));
-                                    Simbolos.Add(new Simbolo(temp2, valorInicial.ToString()));
-                                    Simbolos.Add(new Simbolo(temp3, valorInicial.ToString()));
-                                    Simbolos.Add(new Simbolo(temp4, valorInicial.ToString()));
+                                    Simbolos.Add(new Simbolo(RESULTADO, valorInicial.ToString(), idSimbolo));
+                                    idSimbolo++;
+                                    Simbolos.Add(new Simbolo(tempActual, valorInicial.ToString(), idSimbolo));
+                                    idSimbolo++;
+                                    Simbolos.Add(new Simbolo(temp2, valorInicial.ToString(), idSimbolo));
+                                    idSimbolo++;
+                                    Simbolos.Add(new Simbolo(temp3, valorInicial.ToString(), idSimbolo));
+                                    idSimbolo++;
+                                    Simbolos.Add(new Simbolo(temp4, valorInicial.ToString(), idSimbolo));
+                                    idSimbolo++;
                                 }
                                 else
                                 {
-                                    Cuadruplos.Add(new Cuadruplo(OPERANDO5, OPERANDO6, OPERANDO7, temp3));
-                                    Cuadruplos.Add(new Cuadruplo(OPERANDO2, temp3, OPERANDO4, temp2));
-                                    Cuadruplos.Add(new Cuadruplo(OPERANDO1, OPERANDO3, temp2, tempActual));
-                                    Cuadruplos.Add(new Cuadruplo(OPERADOR, tempActual, "", RESULTADO));
+                                    Cuadruplos.Add(new Cuadruplo(OPERANDO5, OPERANDO6, OPERANDO7, temp3, idCuadruplo));
+                                    idCuadruplo++;
+                                    Cuadruplos.Add(new Cuadruplo(OPERANDO2, temp3, OPERANDO4, temp2, idCuadruplo));
+                                    idCuadruplo++;
+                                    Cuadruplos.Add(new Cuadruplo(OPERANDO1, OPERANDO3, temp2, tempActual, idCuadruplo));
+                                    idCuadruplo++;
+                                    Cuadruplos.Add(new Cuadruplo(OPERADOR, tempActual, "", RESULTADO, idCuadruplo));
+                                    idCuadruplo++;
 
-                                    temporales.Add(new Temporal(tempActual, "0"));
-                                    temporales.Add(new Temporal(temp2, "0"));
-                                    temporales.Add(new Temporal(temp3, "0"));
+                                    temporales.Add(new Temporal(tempActual, "0", idTemporal));
+                                    idTemporal++;
+                                    temporales.Add(new Temporal(temp2, "0", idTemporal));
+                                    idTemporal++;
+                                    temporales.Add(new Temporal(temp3, "0", idTemporal));
+                                    idTemporal++;
 
                                     tempCount++;
 
-                                    Simbolos.Add(new Simbolo(RESULTADO, valorInicial.ToString()));
-                                    Simbolos.Add(new Simbolo(tempActual, valorInicial.ToString()));
-                                    Simbolos.Add(new Simbolo(temp2, valorInicial.ToString()));
-                                    Simbolos.Add(new Simbolo(temp3, valorInicial.ToString()));
+                                    Simbolos.Add(new Simbolo(RESULTADO, valorInicial.ToString(), idSimbolo));
+                                    idSimbolo++;
+                                    Simbolos.Add(new Simbolo(tempActual, valorInicial.ToString(), idSimbolo));
+                                    idSimbolo++;
+                                    Simbolos.Add(new Simbolo(temp2, valorInicial.ToString(), idSimbolo));
+                                    idSimbolo++;
+                                    Simbolos.Add(new Simbolo(temp3, valorInicial.ToString(), idSimbolo));
+                                    idSimbolo++;
                                 }
                             }
                             else
                             {
-                                Cuadruplos.Add(new Cuadruplo(OPERANDO3, OPERANDO4, OPERANDO5, temp2));
-                                Cuadruplos.Add(new Cuadruplo(OPERANDO1, temp2, OPERANDO2, tempActual));
-                                Cuadruplos.Add(new Cuadruplo(OPERADOR, tempActual, "", RESULTADO));
+                                Cuadruplos.Add(new Cuadruplo(OPERANDO3, OPERANDO4, OPERANDO5, temp2, idCuadruplo));
+                                idCuadruplo++;
+                                Cuadruplos.Add(new Cuadruplo(OPERANDO1, temp2, OPERANDO2, tempActual, idCuadruplo));
+                                idCuadruplo++;
+                                Cuadruplos.Add(new Cuadruplo(OPERADOR, tempActual, "", RESULTADO, idCuadruplo));
+                                idCuadruplo++;
 
-                                temporales.Add(new Temporal(tempActual, "0"));
-                                temporales.Add(new Temporal(temp2, "0"));
+                                temporales.Add(new Temporal(tempActual, "0", idTemporal));
+                                idTemporal++;
+                                temporales.Add(new Temporal(temp2, "0", idTemporal));
+                                idTemporal++;
 
                                 tempCount++;
 
-                                Simbolos.Add(new Simbolo(RESULTADO, valorInicial.ToString()));
-                                Simbolos.Add(new Simbolo(tempActual, valorInicial.ToString()));
-                                Simbolos.Add(new Simbolo(temp2, valorInicial.ToString()));
+                                Simbolos.Add(new Simbolo(RESULTADO, valorInicial.ToString(), idSimbolo));
+                                idSimbolo++;
+                                Simbolos.Add(new Simbolo(tempActual, valorInicial.ToString(), idSimbolo));
+                                idSimbolo++;
+                                Simbolos.Add(new Simbolo(temp2, valorInicial.ToString(), idSimbolo));
+                                idSimbolo++;
                             }
                         }
                         else if (node.der.izq.der != null)
@@ -1430,54 +1470,80 @@ namespace Compiladores
                                 tempCount++;
                                 String temp3 = temp + tempCount.ToString();
 
-                                Cuadruplos.Add(new Cuadruplo(OPERANDO5, OPERANDO6, OPERANDO7, temp3));
-                                Cuadruplos.Add(new Cuadruplo(OPERANDO3, temp3, OPERANDO4, temp2));
-                                Cuadruplos.Add(new Cuadruplo(OPERANDO1, temp2, OPERANDO2, tempActual));
-                                Cuadruplos.Add(new Cuadruplo(OPERADOR, tempActual, "", RESULTADO));
+                                Cuadruplos.Add(new Cuadruplo(OPERANDO5, OPERANDO6, OPERANDO7, temp3, idCuadruplo));
+                                idCuadruplo++;
+                                Cuadruplos.Add(new Cuadruplo(OPERANDO3, temp3, OPERANDO4, temp2, idCuadruplo));
+                                idCuadruplo++;
+                                Cuadruplos.Add(new Cuadruplo(OPERANDO1, temp2, OPERANDO2, tempActual, idCuadruplo));
+                                idCuadruplo++;
+                                Cuadruplos.Add(new Cuadruplo(OPERADOR, tempActual, "", RESULTADO, idCuadruplo));
+                                idCuadruplo++;
 
-                                temporales.Add(new Temporal(tempActual, "0"));
-                                temporales.Add(new Temporal(temp2, "0"));
-                                temporales.Add(new Temporal(temp3, "0"));
+                                temporales.Add(new Temporal(tempActual, "0", idTemporal));
+                                idTemporal++;
+                                temporales.Add(new Temporal(temp2, "0", idTemporal));
+                                idTemporal++;
+                                temporales.Add(new Temporal(temp3, "0", idTemporal));
+                                idTemporal++;
 
                                 tempCount++;
 
-                                Simbolos.Add(new Simbolo(RESULTADO, valorInicial.ToString()));
-                                Simbolos.Add(new Simbolo(tempActual, valorInicial.ToString()));
-                                Simbolos.Add(new Simbolo(temp2, valorInicial.ToString()));
-                                Simbolos.Add(new Simbolo(temp3, valorInicial.ToString()));
+                                Simbolos.Add(new Simbolo(RESULTADO, valorInicial.ToString(), idSimbolo));
+                                idSimbolo++;
+                                Simbolos.Add(new Simbolo(tempActual, valorInicial.ToString(), idSimbolo));
+                                idSimbolo++;
+                                Simbolos.Add(new Simbolo(temp2, valorInicial.ToString(), idSimbolo));
+                                idSimbolo++;
+                                Simbolos.Add(new Simbolo(temp3, valorInicial.ToString(), idSimbolo));
+                                idSimbolo++;
                             }
                             else
                             {
-                                Cuadruplos.Add(new Cuadruplo(OPERANDO3, OPERANDO4, OPERANDO5, temp2));
-                                Cuadruplos.Add(new Cuadruplo(OPERANDO1, temp2, OPERANDO2, tempActual));
-                                Cuadruplos.Add(new Cuadruplo(OPERADOR, tempActual, "", RESULTADO));
+                                Cuadruplos.Add(new Cuadruplo(OPERANDO3, OPERANDO4, OPERANDO5, temp2, idCuadruplo));
+                                idCuadruplo++;
+                                Cuadruplos.Add(new Cuadruplo(OPERANDO1, temp2, OPERANDO2, tempActual, idCuadruplo));
+                                idCuadruplo++;
+                                Cuadruplos.Add(new Cuadruplo(OPERADOR, tempActual, "", RESULTADO, idCuadruplo));
+                                idCuadruplo++;
 
-                                temporales.Add(new Temporal(tempActual, "0"));
-                                temporales.Add(new Temporal(temp2, "0"));
+                                temporales.Add(new Temporal(tempActual, "0", idTemporal));
+                                idTemporal++;
+                                temporales.Add(new Temporal(temp2, "0", idTemporal));
+                                idTemporal++;
 
                                 tempCount++;
 
-                                Simbolos.Add(new Simbolo(RESULTADO, valorInicial.ToString()));
-                                Simbolos.Add(new Simbolo(tempActual, valorInicial.ToString()));
-                                Simbolos.Add(new Simbolo(temp2, valorInicial.ToString()));
+                                Simbolos.Add(new Simbolo(RESULTADO, valorInicial.ToString(), idSimbolo));
+                                idSimbolo++;
+                                Simbolos.Add(new Simbolo(tempActual, valorInicial.ToString(), idSimbolo));
+                                idSimbolo++;
+                                Simbolos.Add(new Simbolo(temp2, valorInicial.ToString(), idSimbolo));
+                                idSimbolo++;
                             }
                         }
                         else
                         {
-                            Cuadruplos.Add(new Cuadruplo(OPERANDO1, OPERANDO3, OPERANDO2, tempActual));
-                            Cuadruplos.Add(new Cuadruplo(OPERADOR, tempActual, "", RESULTADO));
-                            temporales.Add(new Temporal(tempActual, "0"));
+                            Cuadruplos.Add(new Cuadruplo(OPERANDO1, OPERANDO3, OPERANDO2, tempActual, idCuadruplo));
+                            idCuadruplo++;
+                            Cuadruplos.Add(new Cuadruplo(OPERADOR, tempActual, "", RESULTADO, idCuadruplo));
+                            idCuadruplo++;
+                            temporales.Add(new Temporal(tempActual, "0", idTemporal));
+                            idTemporal++;
                             tempCount++;
 
-                            Simbolos.Add(new Simbolo(RESULTADO, valorInicial.ToString()));
-                            Simbolos.Add(new Simbolo(tempActual, valorInicial.ToString()));
+                            Simbolos.Add(new Simbolo(RESULTADO, valorInicial.ToString(), idSimbolo));
+                            idSimbolo++;
+                            Simbolos.Add(new Simbolo(tempActual, valorInicial.ToString(), idSimbolo));
+                            idSimbolo++;
                         }
                     }
                     else
                     {
-                        Cuadruplos.Add(new Cuadruplo(OPERADOR, OPERANDO1, "", RESULTADO));
+                        Cuadruplos.Add(new Cuadruplo(OPERADOR, OPERANDO1, "", RESULTADO, idCuadruplo));
+                        idCuadruplo++;
 
-                        Simbolos.Add(new Simbolo(RESULTADO, valorInicial.ToString()));
+                        Simbolos.Add(new Simbolo(RESULTADO, valorInicial.ToString(), idSimbolo));
+                        idSimbolo++;
                     }
                     break;
                 case "+":
@@ -1502,16 +1568,22 @@ namespace Compiladores
                         String OP4_ = (string)node.izq.der.info;
                         RESULTADO2_ = temp + tempCount.ToString();
 
-                        Cuadruplos.Add(new Cuadruplo(OPERANDO1_, OP3_, OP4_, RESULTADO2_));
-                        Simbolos.Add(new Simbolo(RESULTADO2_, ""));
-                        Cuadruplos.Add(new Cuadruplo(OPERADOR_, RESULTADO2_, OPERANDO2_, RESULTADO_));
-                        Simbolos.Add(new Simbolo(RESULTADO_, ""));
+                        Cuadruplos.Add(new Cuadruplo(OPERANDO1_, OP3_, OP4_, RESULTADO2_, idCuadruplo));
+                        idCuadruplo++;
+                        Simbolos.Add(new Simbolo(RESULTADO2_, "", idSimbolo));
+                        idSimbolo++;
+                        Cuadruplos.Add(new Cuadruplo(OPERADOR_, RESULTADO2_, OPERANDO2_, RESULTADO_, idCuadruplo));
+                        idCuadruplo++;
+                        Simbolos.Add(new Simbolo(RESULTADO_, "", idSimbolo));
+                        idSimbolo++;
                         tempCount++;
                     }
                     else
                     {
-                        Cuadruplos.Add(new Cuadruplo(OPERADOR_, OPERANDO1_, OPERANDO2_, RESULTADO_));
-                        Simbolos.Add(new Simbolo(RESULTADO_, ""));
+                        Cuadruplos.Add(new Cuadruplo(OPERADOR_, OPERANDO1_, OPERANDO2_, RESULTADO_, idCuadruplo));
+                        idCuadruplo++;
+                        Simbolos.Add(new Simbolo(RESULTADO_, "", idSimbolo));
+                        idSimbolo++;
                         tempCount++;
                     }
                     break;
@@ -1529,16 +1601,22 @@ namespace Compiladores
                         String OP4_ = (string)node.der.der.info;
                         RES2_ = temp + tempCount.ToString();
 
-                        Cuadruplos.Add(new Cuadruplo(OP2_, OP4_, OP3_, RES2_));
-                        Simbolos.Add(new Simbolo(RES2_, ""));
-                        Cuadruplos.Add(new Cuadruplo(OP_, OP1_, RES2_, RES_));
-                        Simbolos.Add(new Simbolo(RES_, ""));
+                        Cuadruplos.Add(new Cuadruplo(OP2_, OP4_, OP3_, RES2_, idCuadruplo));
+                        idCuadruplo++;
+                        Simbolos.Add(new Simbolo(RES2_, "", idSimbolo));
+                        idSimbolo++;
+                        Cuadruplos.Add(new Cuadruplo(OP_, OP1_, RES2_, RES_, idCuadruplo));
+                        idCuadruplo++;
+                        Simbolos.Add(new Simbolo(RES_, "", idSimbolo));
+                        idSimbolo++; 
                         tempCount++;
                     }
                     else
                     {
-                        Cuadruplos.Add(new Cuadruplo(OP_, OP1_, OP2_, RES_));
-                        Simbolos.Add(new Simbolo(RES_, ""));
+                        Cuadruplos.Add(new Cuadruplo(OP_, OP1_, OP2_, RES_, idCuadruplo));
+                        idCuadruplo++;
+                        Simbolos.Add(new Simbolo(RES_, "", idSimbolo));
+                        idSimbolo++;
                         tempCount++;
                     }
                     break;
@@ -1547,8 +1625,10 @@ namespace Compiladores
                     String OP1 = (string)node.izq.info;
                     String OP2 = (string)node.der.info;
                     String RES = temp + tempCount.ToString();
-                    Cuadruplos.Add(new Cuadruplo(OP, OP1, OP2, RES));
-                    Simbolos.Add(new Simbolo(RES, ""));
+                    Cuadruplos.Add(new Cuadruplo(OP, OP1, OP2, RES, idCuadruplo));
+                    idCuadruplo++;
+                    Simbolos.Add(new Simbolo(RES, "", idSimbolo));
+                    idSimbolo++;
                     tempCount++;
                     break;
                 case "^":

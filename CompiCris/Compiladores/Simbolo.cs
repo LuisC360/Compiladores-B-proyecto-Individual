@@ -10,11 +10,13 @@ namespace Compiladores
     {
         public String simbolo;
         public String valor;
+        public int idSimbolo;
 
-        public Simbolo(String simbolo, String valor)
+        public Simbolo(String simbolo, String valor, int id)
         {
             this.simbolo = simbolo;
             this.valor = valor;
+            this.idSimbolo = id;
         }
     }
 }

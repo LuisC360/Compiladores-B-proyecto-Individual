@@ -12,6 +12,7 @@ namespace Compiladores
         public string OPERANDO1;
         public string OPERANDO2;
         public string RESULTADO;
+        public int idCUADRUPLO;
 
         public Cuadruplo()
         {
@@ -19,29 +20,33 @@ namespace Compiladores
             OPERANDO1 = null;
             OPERANDO2 = null;
             RESULTADO = null;
+            idCUADRUPLO = 0;
         }
-        public Cuadruplo (string opr, string op1, string op2, string res)
+
+        public Cuadruplo (string opr, string op1, string op2, string res, int id)
         {
             OPERADOR = opr;
             OPERANDO1 = op1;
             OPERANDO2 = op2;
             RESULTADO = res;
+            idCUADRUPLO = id;
         }
-        public void CreaCuadruplo(string opr, string op1, string op2)
+
+        public void CreaCuadruplo(string opr, string op1, string op2, int id)
         {
             OPERADOR = opr;
             OPERANDO1 = op1;
             OPERANDO2 = op2;
+            idCUADRUPLO = id;
         }
-        public void CreaCuadruplo(string opr, string op1, string op2,string res)
+
+        public void CreaCuadruplo(string opr, string op1, string op2,string res, int id)
         {
             OPERADOR = opr;
             OPERANDO1 = op1;
             OPERANDO2 = op2;
             RESULTADO = res;
+            idCUADRUPLO = id;
         }
-
-
-
     }
 }
