@@ -45,6 +45,10 @@ namespace Compiladores
         public List<MessageB> PilaMessageBox;
         public List<Boton> PilaBotones;
         public List<Simbolo> Simbolos;
+        public List<String> Errores;
+        public string defaultf;
+        public Cuadruplo cuadruploTemp;
+        public int rango_cuadruplos;
 
         // Todos los valores temporales para los cuadruplos serán almacenados en esta lista.
         public List<Temporal> temporales;
@@ -91,7 +95,9 @@ namespace Compiladores
             PilaMessageBox = new List<MessageB>();
             PilaBotones = new List<Boton>();
             Simbolos = new List<Simbolo>();
-
+            Errores = new List<string>();
+            temporales = new List<Temporal>();
+            defaultf = "NONE";
             tablaCu = tC;
             tablaSi = tS;
         }
@@ -779,8 +785,8 @@ namespace Compiladores
                         }
                         left_43 = PilaNodos.First(); PilaNodos.RemoveAt(0);
                         right_43 = PilaNodos.First(); PilaNodos.RemoveAt(0);
-                        papa_43 = new Nodo("ARR-" + tam);
-                        papa_43.izq = left_43; papa_43.der = right_43;
+                        papa_43 = new Nodo("DEF_ARR");
+                        papa_43.izq = left_43; papa_43.der = right_43;  papa_43.der.der = new Nodo(tam);
                         PilaNodos.Insert(0, papa_43);
                         if (PilaContSent.Count > 0)
                         {
@@ -1231,6 +1237,8 @@ namespace Compiladores
         {
             Nodo recorre,raiz;
             PilaUnknowVals.Clear();
+            PilaListDeclaraciones.Clear();
+            Errores.Clear();
             tree = new TreeView();
             tree.Size = new Size(1042, 720);
             raiz = PilaNodos[0];
@@ -1248,25 +1256,29 @@ namespace Compiladores
             { 
                 TreeNode aux = new TreeNode((String)node.info);
                 tree.Nodes.Add(aux);
+                GeneraCuadruplos(node);
                 if (node.izq != null)
                 {
                     Recursivo(node.izq, aux);
                 }
+                
                 if (node.der != null)
                 {
                     Recursivo(node.der, aux);
                 }
-                GeneraCuadruplos(node);
+                
             }
         }
 
         public void GeneraCuadruplos(Nodo node)
         {
+            String tipo, id;
             switch ((String)node.info)
             {
                 case "SENTENCIA":
                     break;
                 case "if":
+                  //  Cuadruplos.Add(new Cuadruplo("if",idCuadruplo+1,idCuadruplo+2,tem,idCuadruplo))
                     int i = 0;
                     break;
                 case "else":
@@ -1325,24 +1337,70 @@ namespace Compiladores
                     int u = 1;
                     break;
                 case "DEF_VAR":
-                    String tipo = (String)node.der.info;
-                    String id = (String)node.izq.info;
-                    PilaListDeclaraciones.Add(new Variable(tipo,id));
-                    node = node.izq;
-                    if (node.izq != null && node.der!=null)
+                    tipo = (String)node.der.info;
+                    id = (String)node.izq.info;
+                    if (!PilaListDeclaraciones.Exists(x => x.id == id))
                     {
-                        tipo = (String)node.der.info;
-                        id = (String)node.izq.info;
                         PilaListDeclaraciones.Add(new Variable(tipo, id));
-                        node = node.izq;
+                        defaultf = "DEF_VAR"; //Activa bandera para indicar que se estan haciendo asignaciones
                     }
-                    break;                
+                    else
+                    {
+                        Errores.Add("Error:Ya se ha declarado previamente la variable" + id);
+                    }
+                    break;
+                case "DEF_ARR":
+                    tipo = "ARR-"+(String)node.der.info+"-"+node.der.der.info;  //Genera una variable con toda la informacion especificada en los guiones 
+                    id = (String)node.izq.info;
+                    if (!PilaListDeclaraciones.Exists(x => x.id == id))
+                    {
+                        PilaListDeclaraciones.Add(new Variable(tipo, id));
+                        defaultf = "DEF_ARR"; //Activa bandera para indicar que se estan haciendo asignaciones
+                    }
+                    else
+                    {
+                        Errores.Add("Error:Ya se ha declarado previamente la variable" + id);
+                    }
+                    break;
+                case "int":
+                    break;
+                case "string":
+                    break;
+                case "vent":
+                    break;
+                case "textBox":
+                    break;
+                case "label":
+                    break;
+                case "boton":
+                    break;
+                case "float":
+                    break;
                 case ":=":
                     String OPERADOR = (string)node.info;
-                    String OPERANDO1 = (string)node.der.info;
-                    String RESULTADO = (string)node.izq.info;
+                    String OPERANDO1 = (string)node.izq.info;
+                    String OPERANDO2 = (string)node.izq.info;
 
-                    if(node.der.izq != null)
+                    if((string)node.der.info == "+"||(string)node.der.info == "-" ||
+                        (string)node.der.info == "*"||(string)node.der.info == "/")
+                    {
+                        Cuadruplos.Add(new Cuadruplo(OPERADOR, OPERANDO1,temp + tempCount, OPERANDO1, idCuadruplo));
+                        temporales.Add(new Temporal(temp+tempCount, "0", idTemporal));
+                        Simbolos.Add(new Simbolo(temp+tempCount, valorInicial.ToString(), idSimbolo));
+                        cuadruploTemp = Cuadruplos.Last();  cuadruploTemp.RANGO++;  cuadruploTemp.final = idCuadruplo;
+                        idTemporal++;
+                        tempCount++;
+                        idSimbolo++;
+                        idCuadruplo++;
+                    }
+                    else
+                    {
+                        Cuadruplos.Add(new Cuadruplo(OPERADOR, OPERANDO1, OPERANDO2,OPERANDO1, idCuadruplo));
+                        cuadruploTemp.RANGO++;   cuadruploTemp.final = idCuadruplo;
+                        cuadruploTemp = null;
+                        idCuadruplo++;
+                    }
+                  /*  if(node.der.izq != null)
                     {
                         String OPERANDO2 = (string)node.der.der.info;
                         String OPERANDO3 = (string)node.der.izq.info;
@@ -1544,9 +1602,33 @@ namespace Compiladores
 
                         Simbolos.Add(new Simbolo(RESULTADO, valorInicial.ToString(), idSimbolo));
                         idSimbolo++;
-                    }
+                    }*/
                     break;
                 case "+":
+                    //    Cuadruplos.Add(new Cuadruplo(node.info,node.izq.info,node.der.info,))
+                     OPERADOR = (string)node.info;
+                     OPERANDO1 = (string)node.der.info;
+                     OPERANDO2 = (string)node.izq.info;
+
+                    if ((string)node.izq.info == "+" || (string)node.izq.info == "-" ||
+                        (string)node.izq.info == "*" || (string)node.izq.info == "/")
+                    {
+                        Cuadruplos.Add(new Cuadruplo(OPERADOR, OPERANDO1, temp + tempCount, OPERANDO1, idCuadruplo));
+                        temporales.Add(new Temporal(temp + tempCount, "0", idTemporal));
+                        Simbolos.Add(new Simbolo(temp + tempCount, valorInicial.ToString(), idSimbolo));
+                        cuadruploTemp.RANGO++;
+                        idTemporal++;
+                        tempCount++;
+                        idSimbolo++;
+                        idCuadruplo++;
+                    }
+                    else
+                    {
+                        Cuadruplos.Add(new Cuadruplo(OPERADOR, OPERANDO1, OPERANDO2, OPERANDO1, idCuadruplo));
+                        cuadruploTemp.RANGO++; 
+                        cuadruploTemp = null;
+                        idCuadruplo++;
+                    }
                     break;
                 case "-":
                     break;
@@ -1634,20 +1716,37 @@ namespace Compiladores
                 case "^":
                     break;
                 default:
-                    if (((String)node.info).Contains("ARR-"))
+                    switch(defaultf)
                     {
-                      //  PilaListDeclaraciones.Insert(0, new List<Variable>());
-                        String tipo2 = (String)node.der.info;
-                        String id2 = (String)node.izq.info;
-                        PilaListDeclaraciones.Add(new Variable(tipo2+"[]", id2));
-                        node = node.izq;
-                        if (node.izq != null && node.der != null)
-                        {
-                            tipo2 = (String)node.der.info;
-                            id2 = (String)node.izq.info;
-                            PilaListDeclaraciones.Add(new Variable(tipo2+ "[]", id2));
-                            node = node.izq;
-                        }
+                        case "DEF_VAR":
+                            if(node.izq!=null)
+                            {
+                                tipo = (String)node.der.info;
+                                id = (String)node.izq.info;
+                                if (!PilaListDeclaraciones.Exists(x=>x.id == id))
+                                    PilaListDeclaraciones.Add(new Variable(tipo, id));
+                                else
+                                    Errores.Add("Error:Ya se ha declarado previamente la variable" + id);
+                            }
+                            else
+                                defaultf = "NONE";
+                            //Desactiva bandera para indicar que se estan haciendo asignaciones
+                            break;
+                        case "DEF_ARR":
+                            if (node.izq != null)
+                            {
+                                String tamlast = PilaListDeclaraciones.Last().tipo.Split('-')[2]; //Toma el tamaño de la ultima variable declarada en la misma linea
+                                tipo = "ARR-"+(String)node.der.info+"-"+tamlast; 
+                                id = (String)node.izq.info;
+                                if (!PilaListDeclaraciones.Exists(x => x.id == id))
+                                    PilaListDeclaraciones.Add(new Variable(tipo, id));
+                                else
+                                    Errores.Add("Error:Ya se ha declarado previamente la variable" + id);
+                            }
+                            else
+                                defaultf = "NONE";
+                            //Desactiva bandera para indicar que se estan haciendo asignaciones
+                            break;
                     }
                     break;            
             }
