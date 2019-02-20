@@ -32,8 +32,7 @@ namespace Compiladores
             OPERANDO2 = op2;
             RESULTADO = res;
             idCUADRUPLO = id;
-            RANGO = new List<int>();
-          
+            RANGO = new List<int>();         
         }
        
 
