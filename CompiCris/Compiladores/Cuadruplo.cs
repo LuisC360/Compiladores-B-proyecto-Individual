@@ -13,7 +13,7 @@ namespace Compiladores
         public string OPERANDO2;
         public string RESULTADO;
         public int idCUADRUPLO;
-        public int RANGO;
+        public List<int> RANGO;
         public int inicio, final;
 
         public Cuadruplo()
@@ -25,24 +25,17 @@ namespace Compiladores
             idCUADRUPLO = 0;
         }
 
-        public Cuadruplo (string opr, string op1, string op2, string res, int id , int rang)
+        public Cuadruplo (string opr, string op1, string op2, string res, int id)
         {
             OPERADOR = opr;
             OPERANDO1 = op1;
             OPERANDO2 = op2;
             RESULTADO = res;
             idCUADRUPLO = id;
-            RANGO = rang;
+            RANGO = new List<int>();
+          
         }
-        public Cuadruplo(string opr, string op1, string op2, string res, int id)
-        {
-            OPERADOR = opr;
-            OPERANDO1 = op1;
-            OPERANDO2 = op2;
-            RESULTADO = res;
-            idCUADRUPLO = id;
-            //RANGO = rang;
-        }
+       
 
         public void CreaCuadruplo(string opr, string op1, string op2, int id)
         {
