@@ -544,7 +544,7 @@ namespace Compiladores
             File.WriteAllText(Environment.CurrentDirectory+"TablaAS.txt", terminales + Environment.NewLine + noterminales + Environment.NewLine + numestados + Environment.NewLine + data);*/
         }
 
-        //Metodo para reducir la pila
+        // Metodo para reducir la pila
         public bool reducir(Separa rg, Produccion pila, DataGridView tablan)
         {
             string cad;
@@ -577,7 +577,7 @@ namespace Compiladores
             return true;
         }
 
-        //Metodo que busca una celda en especifico en la tabla de AS.
+        // Metodo que busca una celda en especifico en la tabla de AS.
         public string buscacel(DataGridView tabs, int row, int col)
         {
             string valor;
@@ -588,7 +588,7 @@ namespace Compiladores
             return valor;
         }
 
-        //Metodo para verificar que una cadena sea valida y regresa la respuesta si es o no valida
+        // Metodo para verificar que una cadena sea valida y regresa la respuesta si es o no valida
         public bool evaluar(RichTextBox bloc2, DataGridView tabla, DataGridView tablaAS)
         {
             int row;
