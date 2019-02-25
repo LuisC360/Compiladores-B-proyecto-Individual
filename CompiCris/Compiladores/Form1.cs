@@ -55,6 +55,7 @@ namespace Compiladores
             }
             file.Close();
         }
+
         //Al presionar el boton de guardar en la gramatica se activa esta funcion.
         private void button2_Click(object sender, EventArgs e)
         {
@@ -68,45 +69,6 @@ namespace Compiladores
             {
                 richTextBox1.SaveFile(guarda.FileName, RichTextBoxStreamType.PlainText);
             }
-        }
-
-        //Este funcion se activa cuando se quiere abrir un codigo
-        private void button4_Click(object sender, EventArgs e)
-        {
-            OpenFileDialog abrir = new OpenFileDialog();
-            abrir.InitialDirectory = Environment.CurrentDirectory;
-            abrir.RestoreDirectory = true;
-            string line;
-
-            if (abrir.ShowDialog() == DialogResult.OK)
-            {
-                System.IO.StreamReader file = new System.IO.StreamReader(abrir.FileName);
-                richTextBox2.Clear();
-                while ((line = file.ReadLine()) != null)
-                {
-                    richTextBox2.Text += line + Environment.NewLine;
-                }
-                file.Close();
-            }
-        }
-
-        //Esta funcion guarda el texto de la parte de codigo al presionar el boton.
-        private void button5_Click(object sender, EventArgs e)
-        {
-            SaveFileDialog guarda = new SaveFileDialog();
-            guarda.InitialDirectory = Environment.CurrentDirectory;
-
-            guarda.DefaultExt = "*.txt";
-            guarda.Filter = "txt Files|*.txt";
-
-            if (guarda.ShowDialog() == System.Windows.Forms.DialogResult.OK && guarda.FileName.Length > 0)
-            {
-                richTextBox2.SaveFile(guarda.FileName, RichTextBoxStreamType.PlainText);
-            }
-        }
-
-        private void richTextBox1_TextChanged(object sender, EventArgs e)
-        {
         }
 
         //Esta funcion se activa cuando se va a calcular el LR1
@@ -135,7 +97,45 @@ namespace Compiladores
             }
         }
 
-        private void button6_Click(object sender, EventArgs e)
+        private void abrirToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog abrir = new OpenFileDialog();
+            abrir.InitialDirectory = Environment.CurrentDirectory;
+            abrir.RestoreDirectory = true;
+            string line;
+
+            if (abrir.ShowDialog() == DialogResult.OK)
+            {
+                System.IO.StreamReader file = new System.IO.StreamReader(abrir.FileName);
+                richTextBox2.Clear();
+                while ((line = file.ReadLine()) != null)
+                {
+                    richTextBox2.Text += line + Environment.NewLine;
+                }
+                file.Close();
+            }
+        }
+
+        private void guardarToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog guarda = new SaveFileDialog();
+            guarda.InitialDirectory = Environment.CurrentDirectory;
+
+            guarda.DefaultExt = "*.txt";
+            guarda.Filter = "txt Files|*.txt";
+
+            if (guarda.ShowDialog() == System.Windows.Forms.DialogResult.OK && guarda.FileName.Length > 0)
+            {
+                richTextBox2.SaveFile(guarda.FileName, RichTextBoxStreamType.PlainText);
+            }
+        }
+
+        private void salirToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void comprobarToolStripMenuItem_Click(object sender, EventArgs e)
         {
             tablaCu.Rows.Clear();
             tablaSi.Rows.Clear();
@@ -154,28 +154,40 @@ namespace Compiladores
                 {
                     principal.RecorreArbol();
                     principal.tree.Show();
-                  //  this.Controls.Add(principal.tree);
+                    //  this.Controls.Add(principal.tree);
                     Form control = new Form();
                     control.Size = new Size(1024, 720);
                     control.Controls.Add(principal.tree);
-                    control.Show();                   
+                    control.Show();
                 }
             }
         }
 
-        private void botonEjecutar_Click(object sender, EventArgs e)
+        private void ejecutarToolStripMenuItem_Click(object sender, EventArgs e)
         {
 
         }
 
-        private void botonCodigo_Click(object sender, EventArgs e)
+        private void pasoAPasoAAltoNivelToolStripMenuItem_Click(object sender, EventArgs e)
         {
 
         }
 
-        private void botonCuadruplos_Click(object sender, EventArgs e)
+        private void pasoAPasoABajoNivelToolStripMenuItem_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void toolStripButton1_Click(object sender, EventArgs e)
+        {
+            DialogResult dgr = fontDialog1.ShowDialog();
+
+            if(dgr == DialogResult.OK)
+            {
+                Font font = fontDialog1.Font;
+                this.richTextBox2.Text = string.Format("Font: {0}", font.Name);
+                this.richTextBox2.Font = font;
+            }
         }
     }
 }
