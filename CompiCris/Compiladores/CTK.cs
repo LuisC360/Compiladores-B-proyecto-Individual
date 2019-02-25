@@ -10,7 +10,7 @@ namespace Compiladores
 {
     class CTK
     {
-        // Una lista de Tokens.
+        /// Una lista de Tokens.
         public List<NT> lista;
 
         public CTK()
@@ -33,8 +33,8 @@ namespace Compiladores
             return listado;
         }
 
-        // Este metodo se encarga de agregar tokens a la lista, mientras este no exsita previamente.
-        // Recibe como parametro el token a agregar y regresa si pudo agregarlo o no.
+        //Este metodo se encarga de agregar tokens a la lista, mientras este no exsita previamente
+        //recibe como parametro el token a agregar y regresa si pudo agregarlo o no.
         public bool agregaToken(NT tkn)
         {
             for (int x = 0; x < lista.Count; x++)
@@ -46,8 +46,8 @@ namespace Compiladores
             return true;
         }
 
-        // Este metodo busca los terminales en la lista existente y regresa todos los que encontro
-        // en otra lista.
+        //Este metodo busca los terminales en la lista existente y regresa todos los que encontro
+        //en otra lista.
         public List<NT> buscaterminales()
         {
             List<NT> terminales = new List<NT>();
@@ -59,7 +59,7 @@ namespace Compiladores
             return terminales;
         }
 
-        // Este metodo elimina un token determinado y regresa una bandera si lo pudo eliminar o no.
+        //Este metodo elimina un token determinado y regresa una bandera si lo pudo eliminar o no.
         public bool eliminartk(string nombre)
         {
             for (int x = 0; x < lista.Count; x++)
@@ -73,13 +73,13 @@ namespace Compiladores
             return false;
         }
 
-        // Limpiar la lista con tokens actual.
+        //Limpiar la lista con tokens actual.
         public void Clear()
         {
             lista.Clear();
         }
 
-        // Busca un token especifico dentro de la lista y lo regresa cuando lo encuentra.
+        //Busca un token especifico dentro de la lista y lo regresa cuando lo encuentra.
         public NT buscar(string nombre)
         {
             string valorlexico = "";

@@ -8,7 +8,7 @@ namespace Compiladores
 {
     class AFD
     {
-        // Estructura que contiene los estados
+        //Estructura que contiene los estados
         public CEdos ceds;
         public List<Separa> lreg;
         public List<Infoenla> listaEnlaces;
@@ -20,7 +20,7 @@ namespace Compiladores
             listaEnlaces = new List<Infoenla>();
         }
 
-        // Metodo para la regla 2 del AFD.
+        //Metodo para la regla 2 del AFD.
         public void verel2()
         {
             NT A = null;
@@ -54,7 +54,7 @@ namespace Compiladores
             }
         }
 
-        // Metodo para agregar elementos iniciales.
+        //Metodo para agregar elementos iniciales.
         public void addinic(NT X, List<NT> B, List<NT> buscar)
         {
             Separa nregla;
@@ -88,14 +88,14 @@ namespace Compiladores
             });
         }
 
-        // Este Metodo ejecuta los procesos que llevan a la creacion de mas Estados del AFD.
+        //Este Metodo ejecuta los procesos que llevan a la creacion de mas Estados del AFD.
         public void eval()
         {
             verel2();
             Verel3();
         }
 
-        // Metodo que realiza la regla 3 (lazo) de los AFD.
+        //Metodo que realiza la regla 3 de los AFD.
         public void Verel3()
         {
             AFD nuevoest;
@@ -159,7 +159,7 @@ namespace Compiladores
                 return false;
         }
 
-        // Metodo que calcula los primeros a ser agregados
+        //Metodo que calcula los primeros a ser agregados
         public void Primeragrega(Separa nue, List<NT> B, List<NT> bucar)
         {
             bool band = false;

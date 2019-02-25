@@ -59,7 +59,6 @@
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="Algoritmos.cs" />
-    <Compile Include="Label.cs" />
     <Compile Include="MessageB.cs" />
     <Compile Include="Nodo.cs" />
     <Compile Include="Produccion.cs" />

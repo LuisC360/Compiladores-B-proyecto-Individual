@@ -46,12 +46,16 @@ namespace Compiladores
         public List<Boton> PilaBotones;
         public List<Simbolo> Simbolos;
         public List<String> Errores;
+        public List<Form> ventanas;
+        public List<Label> labels;
+        public List<TextBox> textboxs;
+        public List<Button> botones;
         public Stack<String> stack_temps;
         public Stack<Cuadruplo> stack_cuadruplo;
         public string defaultf;
         public Cuadruplo cuadruploTemp;
         public int rango_cuadruplos;
-
+        public String step; 
         // Todos los valores temporales para los cuadruplos serán almacenados en esta lista.
         public List<Temporal> temporales;
 
@@ -101,6 +105,10 @@ namespace Compiladores
             temporales = new List<Temporal>();
             stack_temps = new Stack<string>();
             stack_cuadruplo = new Stack<Cuadruplo>();
+            botones = new List<Button>();
+            textboxs = new List<TextBox>();
+            labels = new List<Label>();
+            ventanas = new List<Form>();
             defaultf = "NONE";
             tablaCu = tC;
             tablaSi = tS;
@@ -554,7 +562,7 @@ namespace Compiladores
             File.WriteAllText(Environment.CurrentDirectory+"TablaAS.txt", terminales + Environment.NewLine + noterminales + Environment.NewLine + numestados + Environment.NewLine + data);*/
         }
 
-        // Metodo para reducir la pila
+        //Metodo para reducir la pila
         public bool reducir(Separa rg, Produccion pila, DataGridView tablan)
         {
             string cad;
@@ -587,7 +595,7 @@ namespace Compiladores
             return true;
         }
 
-        // Metodo que busca una celda en especifico en la tabla de AS.
+        //Metodo que busca una celda en especifico en la tabla de AS.
         public string buscacel(DataGridView tabs, int row, int col)
         {
             string valor;
@@ -598,7 +606,7 @@ namespace Compiladores
             return valor;
         }
 
-        // Metodo para verificar que una cadena sea valida y regresa la respuesta si es o no valida
+        //Metodo para verificar que una cadena sea valida y regresa la respuesta si es o no valida
         public bool evaluar(RichTextBox bloc2, DataGridView tabla, DataGridView tablaAS)
         {
             int row;
@@ -659,7 +667,7 @@ namespace Compiladores
                     if (accion[0] == 'D')
                     {
                         linea = accion.Replace("Desplazar a ", "");
-                        if( linea == "5"|| linea == "206" || linea == "223" || linea == "21" || linea == "156" || linea == "140" || linea == "164")
+                        if(linea == "5" || linea == "21" || linea == "206" || linea == "156" || linea == "223" || linea == "140" || linea == "188")
                         {
                             PilaContSent.Insert(0, 0);
                         }
@@ -704,9 +712,9 @@ namespace Compiladores
             return true;
         }
 
-        public bool Acc(int NumRedu,List<Nodo> nodos)
+        public bool Acc(int NumRedu, List<Nodo> nodos)
         {
-           if(true)
+            if (true)
             {
                 switch (NumRedu)
                 {
@@ -718,6 +726,7 @@ namespace Compiladores
                         left_64 = PilaNodos.First(); PilaNodos.RemoveAt(0);
                         papa_64.izq = left_64; papa_64.der = right_64;
                         PilaNodos.Insert(0, papa_64);
+
                         break;
                     case 62: // term opmult potencia
                         Nodo left_62, right_62, papa_62;
@@ -726,6 +735,7 @@ namespace Compiladores
                         left_62 = PilaNodos.First(); PilaNodos.RemoveAt(0);
                         papa_62.izq = left_62; papa_62.der = right_62;
                         PilaNodos.Insert(0, papa_62);
+
                         break;
                     case 63: // term opmult potencia
                         break;
@@ -737,6 +747,7 @@ namespace Compiladores
                         left_51 = PilaNodos.First(); PilaNodos.RemoveAt(0);
                         papa_51.izq = left_51; papa_51.der = right_51;
                         PilaNodos.Insert(0, papa_51);
+
                         break;
                     case 50:
                         break;
@@ -751,6 +762,7 @@ namespace Compiladores
                         left = PilaNodos.First(); PilaNodos.RemoveAt(0);
                         papa.izq = left; papa.der = right;
                         PilaNodos.Insert(0, papa);
+
                         break;
                     case 45:
                         break;
@@ -759,10 +771,10 @@ namespace Compiladores
                     case 43:
                         Nodo left_43, right_43, papa_43;
                         String tam = (string)PilaNodos.First().info; PilaNodos.RemoveAt(0);
-                        Nodo tipo=null;
+                        Nodo tipo = null;
                         for (var i42 = 0; i42 < PilaNodos.Count; i42++)
                         {
-                            if(((String)PilaNodos[i42].info != "int") && ((String)PilaNodos[i42].info != "float") &&
+                            if (((String)PilaNodos[i42].info != "int") && ((String)PilaNodos[i42].info != "float") &&
                                    ((String)PilaNodos[i42].info != "int") && ((String)PilaNodos[i42].info != "string") &&
                                    ((String)PilaNodos[i42].info != "vent") && ((String)PilaNodos[i42].info != "textBox") &&
                                    ((String)PilaNodos[i42].info != "label") && ((String)PilaNodos[i42].info != "boton"))
@@ -772,9 +784,9 @@ namespace Compiladores
                             {
                                 tipo = new Nodo((String)PilaNodos[i42].info);
                             }
-                            
+
                         }
-                       
+
                         while (((String)PilaNodos[1].info != "int") && ((String)PilaNodos[1].info != "float") &&
                             ((String)PilaNodos[1].info != "int") && ((String)PilaNodos[1].info != "string") &&
                             ((String)PilaNodos[1].info != "vent") && ((String)PilaNodos[1].info != "textBox") &&
@@ -790,12 +802,14 @@ namespace Compiladores
                         left_43 = PilaNodos.First(); PilaNodos.RemoveAt(0);
                         right_43 = PilaNodos.First(); PilaNodos.RemoveAt(0);
                         papa_43 = new Nodo("DEF_ARR");
-                        papa_43.izq = left_43; papa_43.der = right_43;  papa_43.der.der = new Nodo(tam);
+                        papa_43.izq = left_43; papa_43.der = right_43; papa_43.der.der = new Nodo(tam);
                         PilaNodos.Insert(0, papa_43);
                         if (PilaContSent.Count > 0)
                         {
                             PilaContSent[0]++;
                         }
+
+                        //  PilaNodos.Insert(0, null);
                         break;
                     case 42:
                         Nodo left_42, right_42, papa_42;
@@ -836,25 +850,26 @@ namespace Compiladores
                         {
                             PilaContSent[0]++;
                         }
+                        //  PilaNodos.Insert(0, null);
                         break;
                     case 41:
-                        Nodo  right41, padre41;
+                        Nodo right41, padre41;
                         padre41 = new Nodo("MessageBox");
                         right41 = PilaNodos.First(); PilaNodos.RemoveAt(0);
                         padre41.der = right41;
-                        PilaNodos.Insert(0,padre41 );
+                        PilaNodos.Insert(0, padre41);
                         if (PilaContSent.Count > 0)
                         {
                             PilaContSent[0]++;
                         }
-
+                        //  PilaNodos.Insert(0, null);
                         break;
                     case 40:
                         break;
                     case 39:
                         Nodo left1, right1, padre1;
 
-                        if( RaizTemp == null)
+                        if (RaizTemp == null)
                         {
                             padre1 = new Nodo("case");
                             left1 = PilaNodos.First(); PilaNodos.RemoveAt(0);
@@ -865,7 +880,7 @@ namespace Compiladores
                         else
                         {
                             Nodo recorre = RaizTemp;
-                            while(recorre.der!=null)
+                            while (recorre.der != null)
                             {
                                 recorre = recorre.der;
                             }
@@ -876,23 +891,29 @@ namespace Compiladores
                             recorre.der = new Nodo("break"); // = padre1;
                             recorre.der.der = padre1;
                         }
-                       
+                        PilaContSent.RemoveAt(0);
+                        if (PilaContSent.Count > 0)
+                        {
+                            PilaContSent[0]++;
+                        }
                         break;
                     case 37:
-                       
+
                         break;
                     case 36:
-                        PilaNodos.Insert(0, RaizTemp);  RaizTemp = null;
+                        PilaNodos.Insert(0, RaizTemp); RaizTemp = null;
                         Nodo right_37, left_37, padre_37;
                         padre_37 = new Nodo("switch");
                         right_37 = PilaNodos.First(); PilaNodos.RemoveAt(0);
                         left_37 = PilaNodos.First(); PilaNodos.RemoveAt(0);
                         padre_37.izq = left_37; padre_37.der = right_37;
                         PilaNodos.Insert(0, padre_37);
+                        PilaContSent.RemoveAt(0);
                         if (PilaContSent.Count > 0)
                         {
                             PilaContSent[0]++;
                         }
+                        //   PilaNodos.Insert(0, null);
                         break;
                     case 35:
                         Nodo right_35, left_35, padre_35;
@@ -902,10 +923,12 @@ namespace Compiladores
                         padre_35 = new Nodo("while");
                         padre_35.izq = left_35; padre_35.der = right_35;
                         PilaNodos.Insert(0, padre_35);
+                        PilaContSent.RemoveAt(0);
                         if (PilaContSent.Count > 0)
                         {
                             PilaContSent[0]++;
                         }
+                        //  PilaNodos.Insert(0, null);
                         break;
                     case 34:
                         Nodo right_34, left_34, padre_34;
@@ -915,10 +938,12 @@ namespace Compiladores
                         padre_34 = new Nodo("while");
                         padre_34.izq = left_34; padre_34.der = right_34;
                         PilaNodos.Insert(0, padre_34);
+                        PilaContSent.RemoveAt(0);
                         if (PilaContSent.Count > 0)
                         {
                             PilaContSent[0]++;
                         }
+                        //  PilaNodos.Insert(0, null);
                         break;
                     case 33:
                         Nodo right_33, left_33, padre_33;
@@ -928,14 +953,16 @@ namespace Compiladores
                         padre_33 = new Nodo(":=");
                         padre_33.izq = left_33; padre_33.der = right_33;
 
-                        right_33.der = new Nodo("ID["+PilaNodos.First().info+"]"); PilaNodos.RemoveAt(0);
+                        right_33.der = new Nodo("ID[" + PilaNodos.First().info + "]"); PilaNodos.RemoveAt(0);
                         right_33.izq = null;
-                        
+
                         PilaNodos.Insert(0, padre_33);
+
                         if (PilaContSent.Count > 0)
                         {
                             PilaContSent[0]++;
                         }
+                        //  PilaNodos.Insert(0, null);
                         break;
                     case 32:
                         Nodo right_32, left_32, padre_32;
@@ -947,10 +974,12 @@ namespace Compiladores
                         padre_32 = new Nodo(":=");
                         padre_32.izq = left_32; padre_32.der = right_32;
                         PilaNodos.Insert(0, padre_32);
+
                         if (PilaContSent.Count > 0)
                         {
                             PilaContSent[0]++;
                         }
+                        //  PilaNodos.Insert(0, null);
                         break;
                     case 31:
                         Nodo right_31, left_31, padre_31;
@@ -961,11 +990,12 @@ namespace Compiladores
                         right_31 = PilaNodos.First(); PilaNodos.RemoveAt(0);
                         padre_31 = new Nodo(":=");
                         padre_31.izq = left_31; padre_31.der = right_31;
-                        PilaNodos.Insert(0, padre_31);
+
                         if (PilaContSent.Count > 0)
                         {
                             PilaContSent[0]++;
                         }
+                        //    PilaNodos.Insert(0, null);
                         break;
                     case 30:
                         Nodo right_30, left_30, padre_30;
@@ -979,11 +1009,12 @@ namespace Compiladores
                         right_30.izq = null;
 
                         PilaNodos.Insert(0, padre_30);
+
                         if (PilaContSent.Count > 0)
                         {
                             PilaContSent[0]++;
                         }
-
+                        // PilaNodos.Insert(0, null);
                         break;
                     case 29:
                         Nodo right_29, left_29, padre_29;
@@ -993,26 +1024,30 @@ namespace Compiladores
                         padre_29 = new Nodo(":=");
                         padre_29.izq = left_29; padre_29.der = right_29;
                         PilaNodos.Insert(0, padre_29);
+
                         if (PilaContSent.Count > 0)
                         {
                             PilaContSent[0]++;
                         }
+                        // PilaNodos.Insert(0, null);
                         break;
                     case 28:
-                       
+
                         break;
                     case 27:
                         Nodo left_27, right_27, papa_27;
                         PilaNodos.Insert(1, new Nodo("else"));
                         right_27 = PilaNodos.First(); PilaNodos.RemoveAt(0);
                         papa_27 = PilaNodos.First(); PilaNodos.RemoveAt(0);
-                        left_27 = new Nodo("if");  left_27.der = PilaNodos.First(); PilaNodos.RemoveAt(0); left_27.izq = PilaNodos.First(); PilaNodos.RemoveAt(0);
+                        left_27 = new Nodo("if"); left_27.der = PilaNodos.First(); PilaNodos.RemoveAt(0); left_27.izq = PilaNodos.First(); PilaNodos.RemoveAt(0);
                         papa_27.izq = left_27; papa_27.der = right_27;
                         PilaNodos.Insert(0, papa_27);
+                        PilaContSent.RemoveAt(0);
                         if (PilaContSent.Count > 0)
                         {
                             PilaContSent[0]++;
                         }
+                        // PilaNodos.Insert(0, null);
                         break;
                     case 26:
                         Nodo left_26, right_26, papa_26;
@@ -1020,68 +1055,108 @@ namespace Compiladores
                         right_26 = PilaNodos.First(); PilaNodos.RemoveAt(0);
                         left_26 = PilaNodos.First(); PilaNodos.RemoveAt(0);
                         papa_26.izq = left_26; papa_26.der = right_26;
-                        PilaNodos.Insert(0,papa_26);
+                        PilaNodos.Insert(0, papa_26);
+                        PilaContSent.RemoveAt(0);
                         if (PilaContSent.Count > 0)
                         {
                             PilaContSent[0]++;
                         }
+                        // PilaNodos.Insert(0, null);
                         break;
                     case 15:
                         Nodo right_15, papa_15;
                         if (PilaContSent.Count > 0)
                         {
                             while (PilaContSent[0] > 0)
+                            // while(PilaNodos[0]!=null)
                             {
                                 right_15 = PilaNodos.First(); PilaNodos.RemoveAt(0);
-                                if ((String)right_15.info == "SECUENCIA" && right_15.izq == null)
+
+                                if (PilaContSent[0] > 1 && right_15.izq == null)
                                 {
                                     right_15.izq = PilaNodos.First(); PilaNodos.RemoveAt(0);
                                     papa_15 = right_15;
+                                    PilaContSent[0]--;
                                 }
                                 else
                                 {
                                     papa_15 = new Nodo("SECUENCIA");
                                     papa_15.der = right_15;
+                                    if (PilaContSent[0] == 1)
+                                    {
+                                        papa_15.izq = PilaNodos.First(); PilaNodos.RemoveAt(0);
+                                        PilaContSent[0]--;
+                                    }
+                                    if ((String)right_15.info != "SECUENCIA")
+                                    {
+                                        PilaContSent[0]--;
+                                    }
                                 }
                                 PilaNodos.Insert(0, papa_15);
-                                PilaContSent[0]--;
+
                             }
-                            PilaContSent.RemoveAt(0);
+                            // PilaContSent.RemoveAt(0);
+                            //  PilaNodos.RemoveAt(0);
                         }
+
                         break;
                     case 14:
                         Nodo right_14, papa_14;
                         if (PilaContSent.Count > 0)
                         {
                             while (PilaContSent[0] > 0)
+                            //while(PilaNodos[0]!=null)
                             {
                                 right_14 = PilaNodos.First(); PilaNodos.RemoveAt(0);
-                                if ((String)right_14.info == "SECUENCIA" && right_14.izq == null)
+                                if (PilaContSent[0] > 1 && right_14.izq == null)
                                 {
                                     right_14.izq = PilaNodos.First(); PilaNodos.RemoveAt(0);
                                     papa_14 = right_14;
+                                    PilaContSent[0]--;
+
                                 }
                                 else
                                 {
                                     papa_14 = new Nodo("SECUENCIA");
                                     papa_14.der = right_14;
+                                    if (PilaContSent[0] == 1)
+                                    {
+                                        PilaContSent[0]--;
+                                        papa_14.izq = PilaNodos.First(); PilaNodos.RemoveAt(0);
+                                    }
+                                    if ((String)right_14.info != "SECUENCIA")
+                                    {
+                                        PilaContSent[0]--;
+                                    }
                                 }
 
                                 PilaNodos.Insert(0, papa_14);
-                                PilaContSent[0]--;
+
+
                             }
-                            PilaContSent.RemoveAt(0);
+
+                            // PilaNodos.RemoveAt(0);
                         }
+
+
                         break;
                     case 12:
+
+
                         Nodo padre_12, left_12;
                         padre_12 = new Nodo("Click");
                         left_12 = PilaNodos.First(); PilaNodos.RemoveAt(0);
                         padre_12.izq = left_12;
                         PilaNodos.Insert(0, padre_12);
+                        PilaContSent.RemoveAt(0);
+                        if (PilaContSent.Count > 0)
+                        {
+                            PilaContSent[0]++;
+                        }
                         break;
                     case 13:
-                        while (PilaNodos.Count >1 )
+                        while (PilaNodos.Count > 1)
+                        // while(PilaNodos.First()!=null)
                         {
                             right_14 = PilaNodos.First(); PilaNodos.RemoveAt(0);
                             if ((String)right_14.info == "SECUENCIA" && right_14.izq == null)
@@ -1097,12 +1172,15 @@ namespace Compiladores
 
                             PilaNodos.Insert(0, papa_14);
                         }
+                        //  PilaNodos.RemoveAt(0);
                         break;
                     case 11:
+
+
                         Nodo raiz_11, recorre_11;
                         int contParams_11 = 0;
                         raiz_11 = new Nodo("CreaLabel");
-                        while (contParams_11 <4 )
+                        while (contParams_11 < 4)
                         {
                             recorre_11 = raiz_11;
                             while (recorre_11.izq != null)
@@ -1113,12 +1191,17 @@ namespace Compiladores
                             contParams_11++;
                         }
                         PilaNodos.Insert(0, raiz_11);
+                        if (PilaContSent.Count > 0)
+                        {
+                            PilaContSent[0]++;
+                        }
                         break;
                     case 10:
+
                         Nodo raiz_10, recorre_10;
                         int contParams_10 = 0;
                         raiz_10 = new Nodo("CreaTextbox");
-                         while (contParams_10 < 5)
+                        while (contParams_10 < 5)
                         {
                             recorre_10 = raiz_10;
                             while (recorre_10.izq != null)
@@ -1129,15 +1212,21 @@ namespace Compiladores
                             contParams_10++;
                         }
                         PilaNodos.Insert(0, raiz_10);
+                        if (PilaContSent.Count > 0)
+                        {
+                            PilaContSent[0]++;
+                        }
                         break;
                     case 9:
+
+
                         Nodo raiz, recorre_9;
-                        int contParams_9 = 0 ;
+                        int contParams_9 = 0;
                         raiz = new Nodo("CreaBoton");
-                        while(contParams_9<6)
+                        while (contParams_9 < 6)
                         {
                             recorre_9 = raiz;
-                            while(recorre_9.izq != null)
+                            while (recorre_9.izq != null)
                             {
                                 recorre_9 = recorre_9.izq;
                             }
@@ -1146,11 +1235,18 @@ namespace Compiladores
                         }
                         raiz.der = PilaNodos.First(); PilaNodos.RemoveAt(0);
                         PilaNodos.Insert(0, raiz);
+
+                        if (PilaContSent.Count > 0)
+                        {
+                            PilaContSent.RemoveAt(0);
+                            PilaContSent[0]++;
+                        }
                         break;
                     case 7:
                         break;
                     case 6:
-                        Nodo  padre_6, recorre_6;
+
+                        Nodo padre_6, recorre_6;
                         int contParms_6 = 0;
                         padre_6 = new Nodo("CreaVentana");
 
@@ -1186,16 +1282,22 @@ namespace Compiladores
                         }
                         padre_6.der = raiz_6;
                         PilaNodos.Insert(0, padre_6);
+
+
                         if (PilaContSent.Count > 0)
                         {
+                            PilaContSent.RemoveAt(0);
                             PilaContSent[0]++;
                         }
+                        // PilaNodos.Insert(0, null);
                         break;
                     case 5:
+
+
                         Nodo padre_5;
                         int contParms_5 = 0;
                         padre_5 = new Nodo("CreaVentana");
-                        
+
                         while (contParms_5 < 6)
                         {
                             recorre_10 = padre_5;
@@ -1206,18 +1308,19 @@ namespace Compiladores
                             recorre_10.izq = PilaNodos.First(); PilaNodos.RemoveAt(0);
                             contParms_5++;
                         }
-                        
+
                         while ((String)PilaNodos[0].info == "CreaBoton" || (String)PilaNodos[0].info == "CreaTextbox"
                             || (String)PilaNodos[0].info == "CreaLabel")
                         {
                             Conexion.Insert(0, PilaNodos.First()); PilaNodos.RemoveAt(0);
-                            if(PilaNodos.Count==0)
+                            if (PilaNodos.Count == 0)
                             {
                                 break;
                             }
                         }
                         recorre_10 = Conexion.First(); Conexion.RemoveAt(0);
-                       Nodo  raiz_5 = recorre_10;
+
+                        Nodo raiz_5 = recorre_10;
                         while (Conexion.Count > 0)
                         {
                             while (recorre_10.der != null)
@@ -1227,11 +1330,14 @@ namespace Compiladores
                             recorre_10.der = Conexion.First(); Conexion.RemoveAt(0);
                         }
                         padre_5.der = raiz_5;
-                        PilaNodos.Insert(0,padre_5);
+                        PilaNodos.Insert(0, padre_5);
+
                         if (PilaContSent.Count > 0)
                         {
+                            PilaContSent.RemoveAt(0);
                             PilaContSent[0]++;
                         }
+                        // PilaNodos.Insert(0, null);
                         break;
                 }
             }
@@ -1260,14 +1366,142 @@ namespace Compiladores
             muestra_simbolos();
             tree.ExpandAll();
         }
+        public void Ejecucion( )
+        {
 
+        }
+        public void EjecutaCuadruplo(Cuadruplo cua)
+        {
+            String name;
+            String cadena;
+            int x, y, width, height;
+            Cuadruplo iterador;
+
+            switch (cua.OPERADOR)
+            {
+                case "CreaBoton":
+                    name = cua.OPERANDO1;
+                    cadena = cua.OPERANDO2;
+                    x =Convert.ToInt32( Cuadruplos[cua.RANGO[0]].OPERANDO1);
+                    y = Convert.ToInt32(Cuadruplos[cua.RANGO[0]].OPERANDO1);
+                    width = Convert.ToInt32(Cuadruplos[cua.RANGO[1]].OPERANDO1);
+                    height = Convert.ToInt32(Cuadruplos[cua.RANGO[1]].OPERANDO1);
+                    Button boton = new Button();
+                    boton.Size = new Size(width, height);
+                    boton.Left = x; boton.Top = y;
+                    boton.Name = name;  boton.Text = cadena;
+                    botones.Add(boton);
+                    break;
+                case "MessageBox":
+                    MessageBox.Show(cua.OPERANDO1);
+                    break;
+                case "CreaVentana":
+                    name = cua.OPERANDO1;
+                    cadena = cua.OPERANDO2;
+                    x = 20;
+                    y = 50;
+                    width = 1000;
+                    height = 100;
+                    if (cua.RANGO.Count>0)
+                    {
+                        x = Convert.ToInt32(Cuadruplos[cua.RANGO[0]].OPERANDO1);
+                        y = Convert.ToInt32(Cuadruplos[cua.RANGO[0]].OPERANDO1);
+                        width = Convert.ToInt32(Cuadruplos[cua.RANGO[1]].OPERANDO1);
+                        height = Convert.ToInt32(Cuadruplos[cua.RANGO[1]].OPERANDO1);
+                    }
+                       
+                    Form vent = new Form();
+                    vent.Size = new Size(width, height);
+                    vent.Left = x; vent.Top = y;
+                    vent.Name = name; vent.Text = cadena;
+                    vent.Show();
+                    ventanas.Add(vent);
+                    break;
+                case "CreaTextbox":
+                    name = cua.OPERANDO1;
+                    x = Convert.ToInt32(Cuadruplos[cua.RANGO[0]].OPERANDO1);
+                    y = Convert.ToInt32(Cuadruplos[cua.RANGO[0]].OPERANDO1);
+                    width = Convert.ToInt32(Cuadruplos[cua.RANGO[1]].OPERANDO1);
+                    height = Convert.ToInt32(Cuadruplos[cua.RANGO[1]].OPERANDO1);
+
+                    TextBox tb = new TextBox();
+                    tb.Size = new Size(width, height);
+                    tb.Left = x; tb.Top = y;
+                    tb.Name = name; 
+                    tb.Show();
+                    textboxs.Add(tb);
+                    break;
+                case "CreaLabel":
+                    name = cua.OPERANDO1;
+                    cadena = cua.OPERANDO2;
+                    x = Convert.ToInt32(Cuadruplos[cua.RANGO[0]].OPERANDO1);
+                    y = Convert.ToInt32(Cuadruplos[cua.RANGO[0]].OPERANDO1);
+                    Label label = new Label();
+                    label.Left = x; label.Top = y;
+                    label.Name = name;label.Text = cadena;
+                    label.Show();
+                    labels.Add(label);
+                    break;
+                case "Click":
+                    foreach(var i in cua.RANGO)
+                    {
+                        int index = cua.RANGO.IndexOf(i);
+                        EjecutaCuadruplo(Cuadruplos[index]);
+                    }
+                    break;
+                case "if":
+                    int divisor = cua.RANGO.IndexOf(-1);
+                    foreach (var i in cua.RANGO)
+                    {
+                        if(i != -1)
+                        {
+                            int index = cua.RANGO.IndexOf(i);
+                            EjecutaCuadruplo(Cuadruplos[index]);
+                        }
+                        else
+                        {
+                            Temporal cbool = temporales.Find(f => f.id == cua.OPERANDO1);
+                            if((bool)cbool.variable == true)
+                            {
+                                cua.RESULTADO = "true";
+                            }
+                            else
+                            {
+                                cua.RESULTADO = "false";
+                            }
+                        }
+                    }
+
+                    break;
+                case "while":
+                    break;
+                case "switch":
+                    break;
+                case "case":
+                    break;
+                case "+":
+                    break;
+                case "-":
+                    break;
+                case "*":
+                    break;
+                case "/":
+                    break;
+                case ">":
+                    break;
+                case "<":
+                    break;
+                case ":=":
+                    break;
+            }
+        }
         public void Recursivo(Nodo node,TreeNode tree)
         {
             if(node!=null)
             { 
                 TreeNode aux = new TreeNode((String)node.info);
                 tree.Nodes.Add(aux);
-               GeneraCuadruplos(node);
+          //      GeneraCuadruplos(node);
                 if (node.izq != null)
                 {
                     Recursivo(node.izq, aux);
@@ -1281,7 +1515,8 @@ namespace Compiladores
         }
         public void Libera_Pila(Nodo node)
         {
-            if((String)node.info == "if" ||(String) node.info == ":=" || (String)node.info == "while" || (String)node.info == "switch" )
+            if((String)node.info == "if"||(String) node.info == ":=" || (String)node.info == "while" || (String)node.info == "switch"
+                || (String)node.info == "Click" || (String)node.info == "CreaBoton" || (String)node.info == "CreaVentana" )
             {
                 if(stack_cuadruplo.Count>0)
                     stack_cuadruplo.Pop();
@@ -1302,7 +1537,7 @@ namespace Compiladores
                     OPERANDO1 = (string)node.izq.info;
                     OPERANDO2 = (string)node.der.info;
                     Cuadruplos.Add(new Cuadruplo(OPERADOR, temp + tempCount, (idCuadruplo+1).ToString(),"", idCuadruplo));
-                    temporales.Add(new Temporal(temp + tempCount, "0", idTemporal));
+                    temporales.Add(new Temporal(temp + tempCount, "0", idTemporal,"bool"));
                     Simbolos.Add(new Simbolo(temp + tempCount, valorInicial.ToString(), idSimbolo));
                     if(stack_cuadruplo.Count>0)
                     {
@@ -1323,7 +1558,7 @@ namespace Compiladores
                     OPERANDO1 = (string)node.izq.info;
                     OPERANDO2 = (string)node.der.info;
                     Cuadruplos.Add(new Cuadruplo(OPERADOR, temp + tempCount, (idCuadruplo + 1).ToString(), "", idCuadruplo));
-                    temporales.Add(new Temporal(temp + tempCount, "0", idTemporal));
+                    temporales.Add(new Temporal(temp + tempCount, "0", idTemporal,"bool"));
                     Simbolos.Add(new Simbolo(temp + tempCount, valorInicial.ToString(), idSimbolo));
                     if (stack_cuadruplo.Count > 0)
                     {
@@ -1341,17 +1576,11 @@ namespace Compiladores
                     OPERANDO1 = (string)node.izq.info;
                     OPERANDO2 = (string)node.der.info;
                     Cuadruplos.Add(new Cuadruplo(OPERADOR, OPERANDO1, "", "", idCuadruplo));
-                   // temporales.Add(new Temporal(temp + tempCount, "0", idTemporal));
-               //     Simbolos.Add(new Simbolo(temp + tempCount, valorInicial.ToString(), idSimbolo));
                     if (stack_cuadruplo.Count > 0)
                     {
                         stack_cuadruplo.First().RANGO.Add(idCuadruplo);
                     }
-                    //stack_temps.Push(temp + tempCount);
                     stack_cuadruplo.Push(Cuadruplos.Last());
-                   // idTemporal++;
-                    //tempCount++;
-                   // idSimbolo++;
                     idCuadruplo++;
                     break;
                 case "case":
@@ -1359,17 +1588,11 @@ namespace Compiladores
                     OPERANDO1 = (string)node.izq.info;
                     OPERANDO2 = (string)node.der.info;
                     Cuadruplos.Add(new Cuadruplo(OPERADOR, OPERANDO1, Cuadruplos.Last().OPERANDO1,"", idCuadruplo));
-                    //temporales.Add(new Temporal(temp + tempCount, "0", idTemporal));
-                    //     Simbolos.Add(new Simbolo(temp + tempCount, valorInicial.ToString(), idSimbolo));
                     if (stack_cuadruplo.Count > 0)
                     {
                         stack_cuadruplo.First().RANGO.Add(idCuadruplo);
                     }
-                    //stack_temps.Push(temp + tempCount);
                     stack_cuadruplo.Push(Cuadruplos.Last());
-                    // idTemporal++;
-                    //tempCount++;0
-                    // idSimbolo++;
                     idCuadruplo++;
                     break;
                 case "break":
@@ -1382,48 +1605,143 @@ namespace Compiladores
                     break;
                 case "MessageBox":
                     String cadena = (String)node.der.info;
-                    String slC = cadena.Replace("\"", "");
-
-                    PilaMessageBox.Add(new MessageB(slC));
+                    OPERADOR = (string)node.info;
+                    Cuadruplos.Add(new Cuadruplo(OPERADOR, cadena, "", "", idCuadruplo));
+                    if (stack_cuadruplo.Count > 0)
+                    {
+                        stack_cuadruplo.First().RANGO.Add(idCuadruplo);
+                    }
+                    idCuadruplo++;
                     break;
                 case "CreaVentana":
-                    int w = 1;
+                    OPERADOR = (string)node.info;
+                    String idWindow = (String)node.izq.info;
+                    String stringWindow = (String)node.izq.izq.info;
+                    stringWindow = stringWindow.Replace("\"", "");
+                    Cuadruplos.Add(new Cuadruplo(OPERADOR, idWindow, stringWindow, "", idCuadruplo));
+                    if (stack_cuadruplo.Count > 0)
+                    {
+                        stack_cuadruplo.First().RANGO.Add(idCuadruplo);
+                    }
+                    stack_cuadruplo.Push(Cuadruplos.Last());
+                    idCuadruplo++;
+                    if (node.izq.izq.izq != null)
+                    {
+                        String x = (String)node.izq.izq.izq.info;
+                        String y = (String)node.izq.izq.izq.izq.info;
+                        String w = (String)node.izq.izq.izq.izq.izq.info;
+                        String h = (String)node.izq.izq.izq.izq.izq.izq.info;
+                        
+                        Cuadruplos.Add(new Cuadruplo(OPERADOR, x, y, "", idCuadruplo));
+                        if (stack_cuadruplo.Count > 0)
+                        {
+                            stack_cuadruplo.First().RANGO.Add(idCuadruplo);
+                        }
+                        idCuadruplo++;
+                        Cuadruplos.Add(new Cuadruplo(OPERADOR, w, h, "", idCuadruplo));
+                        if (stack_cuadruplo.Count > 0)
+                        {
+                            stack_cuadruplo.First().RANGO.Add(idCuadruplo);
+                        }
+                        idCuadruplo++;
+                    }
+                   // stack_cuadruplo.Pop();
+                    
+
                     break;
                 case "CreaLabel":
+                    OPERADOR = (string)node.info;
                     String idLabel = (String)node.izq.info;
                     String stringLabel = (String)node.izq.izq.info;
                     String slN = stringLabel.Replace("\"", "");
 
-                    int c1 = int.Parse((string)node.izq.izq.izq.info);
-                    int c2 = int.Parse((string)node.izq.izq.izq.izq.info);
-
-                    PilaLabel.Add(new Label(idLabel, slN, c1, c2));
+                    String c1 = (string)node.izq.izq.izq.info;
+                    String c2 = (string)node.izq.izq.izq.izq.info;
+                    Cuadruplos.Add(new Cuadruplo(OPERADOR,idLabel , stringLabel, "", idCuadruplo));
+                    if (stack_cuadruplo.Count > 0)
+                    {
+                        stack_cuadruplo.First().RANGO.Add(idCuadruplo);
+                    }
+                    stack_cuadruplo.Push(Cuadruplos.Last());
+                    idCuadruplo++;
+                    Cuadruplos.Add(new Cuadruplo(OPERADOR, c1, c2, "", idCuadruplo));
+                    if (stack_cuadruplo.Count > 0)
+                    {
+                        stack_cuadruplo.First().RANGO.Add(idCuadruplo);
+                    }
+                    idCuadruplo++;
+                    stack_cuadruplo.Pop();
                     break;
                 case "CreaBoton":
+                    OPERADOR = (string)node.info;
                     String idBoton = (String)node.izq.info;
                     String cadenaBoton = (String)node.izq.izq.info;
                     String cb2 = cadenaBoton.Replace("\"", "");
 
-                    int a1 = int.Parse((string)node.izq.izq.izq.info);
-                    int b1 = int.Parse((string)node.izq.izq.izq.izq.info);
-                    int a2 = int.Parse((string)node.izq.izq.izq.izq.izq.info);
-                    int b2 = int.Parse((string)node.izq.izq.izq.izq.izq.izq.info);
-
-                    PilaBotones.Add(new Boton(idBoton, cb2, a1, b1, a2, b2));
+                    string a1 = (string)node.izq.izq.izq.info;
+                    string b1 = (string)node.izq.izq.izq.izq.info;
+                    string a2 = (string)node.izq.izq.izq.izq.izq.info;
+                    string b2 = (string)node.izq.izq.izq.izq.izq.izq.info;
+                    Cuadruplos.Add(new Cuadruplo(OPERADOR, idBoton, cadenaBoton, "", idCuadruplo));
+                    if (stack_cuadruplo.Count > 0)
+                    {
+                        stack_cuadruplo.First().RANGO.Add(idCuadruplo);
+                    }
+                    stack_cuadruplo.Push(Cuadruplos.Last());
+                    idCuadruplo++;
+                    Cuadruplos.Add(new Cuadruplo(OPERADOR, a1, b1, "", idCuadruplo));
+                    if (stack_cuadruplo.Count > 0)
+                    {
+                        stack_cuadruplo.First().RANGO.Add(idCuadruplo);
+                    }
+                    idCuadruplo++;
+                    Cuadruplos.Add(new Cuadruplo(OPERADOR, a2, b2, "", idCuadruplo));
+                    if (stack_cuadruplo.Count > 0)
+                    {
+                        stack_cuadruplo.First().RANGO.Add(idCuadruplo);
+                    }
+                    idCuadruplo++;
+              //      stack_cuadruplo.Pop();
+                    //PilaBotones.Add(new Boton(idBoton, cb2, a1, b1, a2, b2));
                     break;
                 case "CreaTextbox":
-                    String nombreTb = (String)node.izq.info;
-                    int x1 = int.Parse((string)node.izq.izq.info);
-                    int y1 = int.Parse((string)node.izq.izq.izq.info);
-                    int x2 = int.Parse((string)node.izq.izq.izq.izq.info);
-                    int y2 = int.Parse((string)node.izq.izq.izq.izq.izq.info);
+                    OPERADOR = (String)node.info;
+                    String texto = (String)node.izq.info;
+                    String x1 = (string)node.izq.izq.info;
+                    String  y1 = (string)node.izq.izq.izq.info;
+                    String h2 = (string)node.izq.izq.izq.izq.info;
+                    String w2 = (string)node.izq.izq.izq.izq.izq.info;
+                    Cuadruplos.Add(new Cuadruplo(OPERADOR, texto,"", "", idCuadruplo));
+                    if (stack_cuadruplo.Count > 0)
+                    {
+                        stack_cuadruplo.First().RANGO.Add(idCuadruplo);
+                    }
+                    stack_cuadruplo.Push(Cuadruplos.Last());
+                    idCuadruplo++;
+                    Cuadruplos.Add(new Cuadruplo(OPERADOR, x1, y1, "", idCuadruplo));
+                    if (stack_cuadruplo.Count > 0)
+                    {
+                        stack_cuadruplo.First().RANGO.Add(idCuadruplo);
+                    }
+                    idCuadruplo++;
+                    Cuadruplos.Add(new Cuadruplo(OPERADOR, h2, w2, "", idCuadruplo));
+                    if (stack_cuadruplo.Count > 0)
+                    {
+                        stack_cuadruplo.First().RANGO.Add(idCuadruplo);
+                    }
+                    idCuadruplo++;
+                    stack_cuadruplo.Pop();
 
-                    PilaElementosVentana.Add(new ElementoVentana(nombreTb, x1, y1, x2, y2));
-                    Simbolos.Add(new Simbolo(nombreTb, "\0", idSimbolo));
-                    idSimbolo++;
                     break;
                 case "Click":
-                    int u = 1;
+                    OPERADOR = (string)node.info;
+                    Cuadruplos.Add(new Cuadruplo(OPERADOR, "","", "", idCuadruplo));
+                    if (stack_cuadruplo.Count > 0)
+                    {
+                        stack_cuadruplo.First().RANGO.Add(idCuadruplo);
+                    }
+                    stack_cuadruplo.Push(Cuadruplos.Last());
+                    idCuadruplo++;
                     break;
                 case "DEF_VAR":
                     tipo = (String)node.der.info;
@@ -1471,10 +1789,10 @@ namespace Compiladores
                      OPERANDO2 = (string)node.der.info;
 
                     if((string)node.der.info == "+"||(string)node.der.info == "-" ||
-                        (string)node.der.info == "*"||(string)node.der.info == "/")
+                        (string)node.der.info == "*"||(string)node.der.info == "/" || (string)node.der.info == "^")
                     {
                         Cuadruplos.Add(new Cuadruplo(OPERADOR, OPERANDO1,temp + tempCount, OPERANDO1, idCuadruplo));
-                        temporales.Add(new Temporal(temp+tempCount, "0", idTemporal));
+                        temporales.Add(new Temporal(temp+tempCount, "0", idTemporal,"int"));
                         stack_temps.Push(temp + tempCount);
                         Simbolos.Add(new Simbolo(temp+tempCount, valorInicial.ToString(), idSimbolo));
                         if (stack_cuadruplo.Count > 0)
@@ -1490,89 +1808,16 @@ namespace Compiladores
                     else
                     {
                         Cuadruplos.Add(new Cuadruplo(OPERADOR, OPERANDO1, OPERANDO2,OPERANDO1, idCuadruplo));
-                        stack_cuadruplo.Pop();
+                        if (stack_cuadruplo.Count>0)
+                        {
+                            stack_cuadruplo.First().RANGO.Add(idCuadruplo);
+                        }
+                        stack_cuadruplo.Push(Cuadruplos.Last());
+
                         idCuadruplo++;
                     }
                     break;
-               /* case ">":
-                    String OPERADOR_ = (string)node.info;
-                    String OPERANDO1_ = (string)node.izq.info;
-                    String OPERANDO2_ = (string)node.der.info;
-                    String RESULTADO_ = temp + tempCount.ToString();
-                    String RESULTADO2_ = "";
-
-                    if (node.izq.izq != null)
-                    {
-                        tempCount++;
-                        String OP3_ = (string)node.izq.izq.info;
-                        String OP4_ = (string)node.izq.der.info;
-                        RESULTADO2_ = temp + tempCount.ToString();
-
-                        Cuadruplos.Add(new Cuadruplo(OPERANDO1_, OP3_, OP4_, RESULTADO2_, idCuadruplo));
-                        idCuadruplo++;
-                        Simbolos.Add(new Simbolo(RESULTADO2_, "", idSimbolo));
-                        idSimbolo++;
-                        Cuadruplos.Add(new Cuadruplo(OPERADOR_, RESULTADO2_, OPERANDO2_, RESULTADO_, idCuadruplo));
-                        idCuadruplo++;
-                        Simbolos.Add(new Simbolo(RESULTADO_, "", idSimbolo));
-                        idSimbolo++;
-                        tempCount++;
-                    }
-                    else
-                    {
-                        Cuadruplos.Add(new Cuadruplo(OPERADOR_, OPERANDO1_, OPERANDO2_, RESULTADO_, idCuadruplo));
-                        idCuadruplo++;
-                        Simbolos.Add(new Simbolo(RESULTADO_, "", idSimbolo));
-                        idSimbolo++;
-                        tempCount++;
-                    }
-                    break;
-                case "<":
-                    String OP_ = (string)node.info;
-                    String OP1_ = (string)node.izq.info;
-                    String OP2_ = (string)node.der.info;
-                    String RES_ = temp + tempCount.ToString();
-                    String RES2_ = "";
-
-                    if (node.der.izq != null)
-                    {
-                        tempCount++;
-                        String OP3_ = (string)node.der.izq.info;
-                        String OP4_ = (string)node.der.der.info;
-                        RES2_ = temp + tempCount.ToString();
-
-                        Cuadruplos.Add(new Cuadruplo(OP2_, OP4_, OP3_, RES2_, idCuadruplo));
-                        idCuadruplo++;
-                        Simbolos.Add(new Simbolo(RES2_, "", idSimbolo));
-                        idSimbolo++;
-                        Cuadruplos.Add(new Cuadruplo(OP_, OP1_, RES2_, RES_, idCuadruplo));
-                        idCuadruplo++;
-                        Simbolos.Add(new Simbolo(RES_, "", idSimbolo));
-                        idSimbolo++; 
-                        tempCount++;
-                    }
-                    else
-                    {
-                        Cuadruplos.Add(new Cuadruplo(OP_, OP1_, OP2_, RES_, idCuadruplo));
-                        idCuadruplo++;
-                        Simbolos.Add(new Simbolo(RES_, "", idSimbolo));
-                        idSimbolo++;
-                        tempCount++;
-                    }
-                    break;
-                case "==":
-                    String OP = (string)node.info;
-                    String OP1 = (string)node.izq.info;
-                    String OP2 = (string)node.der.info;
-                    String RES = temp + tempCount.ToString();
-                    Cuadruplos.Add(new Cuadruplo(OP, OP1, OP2, RES, idCuadruplo));
-                    idCuadruplo++;
-                    Simbolos.Add(new Simbolo(RES, "", idSimbolo));
-                    idSimbolo++;
-                    tempCount++;
-                    break;*/
-                case "^":
-                    break;
+              
                 default:
                     switch(defaultf)
                     {
@@ -1606,45 +1851,52 @@ namespace Compiladores
                             //Desactiva bandera para indicar que se estan haciendo asignaciones
                             break;
                     }
-                    if((string)node.info == "+"|| (string)node.info == "*" || (string)node.info == "/" || (string)node.info == "-" || (string)node.info == ">" || (string)node.info == "<")
+                    if((string)node.info == "+"|| (string)node.info == "*" || (string)node.info == "/" || (string)node.info == "-" || 
+                        (string)node.info == ">" || (string)node.info == "<" || (string)node.info == "^")
                     {
                         //    Cuadruplos.Add(new Cuadruplo(node.info,node.izq.info,node.der.info,))
                         OPERADOR = (string)node.info;
                         OPERANDO1 = (string)node.der.info;
                         OPERANDO2 = (string)node.izq.info;
                         if (OPERANDO1 == "+" || OPERANDO1 == "-" ||
-                            OPERANDO1 == "*" || OPERANDO1 == "/" || OPERANDO1 == "<" || OPERANDO1 == ">")
+                            OPERANDO1 == "*" || OPERANDO1 == "/" || OPERANDO1 == "<" || OPERANDO1 == ">" || OPERANDO1 == "^")
                         {
                             OPERANDO2 = (string)node.der.info;
                             OPERANDO1 = (string)node.izq.info;
                         }
-                        if ((OPERANDO2 == "+" || OPERANDO2 == "-" || OPERANDO2 == "*" || OPERANDO2 == "/" || OPERANDO2 == "<" || OPERANDO2 == ">") &&
-                           (OPERANDO1 != "+" && OPERANDO1 != "-" && OPERANDO1 != "*" && OPERANDO1 != "/" && OPERANDO1 != "<" && OPERANDO1 != ">"))
+                        if ((OPERANDO2 == "+" || OPERANDO2 == "-" || OPERANDO2 == "*" || OPERANDO2 == "/" || OPERANDO2 == "<" || OPERANDO2 == ">" || OPERANDO2 == "^") &&
+                           (OPERANDO1 != "+" && OPERANDO1 != "-" && OPERANDO1 != "*" && OPERANDO1 != "/" && OPERANDO1 != "<" && OPERANDO1 != ">"  && OPERANDO1 != "^"))
                         {
 
                             tempCount++;
                             Cuadruplos.Add(new Cuadruplo(OPERADOR, OPERANDO1, temp + tempCount, stack_temps.Pop(), idCuadruplo));
-                            temporales.Add(new Temporal(temp + tempCount, "0", idTemporal));
+                            temporales.Add(new Temporal(temp + tempCount, "0", idTemporal,"int"));
                             stack_temps.Push(temp + tempCount);
                             Simbolos.Add(new Simbolo(temp + tempCount, valorInicial.ToString(), idSimbolo));
-                            stack_cuadruplo.First().RANGO.Insert(0, idCuadruplo);
+                            if(stack_cuadruplo.Count>0)
+                            {
+                                stack_cuadruplo.First().RANGO.Insert(0, idCuadruplo);
+                            }
                             idTemporal++;
                             idSimbolo++;
                             idCuadruplo++;
                         }
-                        else if ((OPERANDO2 == "+" || OPERANDO2 == "-" || OPERANDO2 == "*" || OPERANDO2 == "/" || OPERANDO2 == "<" || OPERANDO2 == ">") && (OPERANDO1 == "+" || OPERANDO1 == "-" || OPERANDO1 == "*" || OPERANDO1 == "/" || OPERANDO1 == "<" || OPERANDO1 == ">"))
+                        else if ((OPERANDO2 == "+" || OPERANDO2 == "-" || OPERANDO2 == "*" || OPERANDO2 == "/" || OPERANDO2 == "<" || OPERANDO2 == ">" || OPERANDO2 == "^") && (OPERANDO1 == "+" || OPERANDO1 == "-" || OPERANDO1 == "*" || OPERANDO1 == "/" || OPERANDO1 == "<" || OPERANDO1 == ">" || OPERANDO1 == "^"))
                         {
                             tempCount++;
                             Cuadruplos.Add(new Cuadruplo(OPERADOR, temp + tempCount, temp + (tempCount + 1), stack_temps.Pop(), idCuadruplo));
-                            temporales.Add(new Temporal(temp + tempCount, "0", idTemporal));
+                            temporales.Add(new Temporal(temp + tempCount, "0", idTemporal,"int"));
                             Simbolos.Add(new Simbolo(temp + tempCount, valorInicial.ToString(), idSimbolo));
                             stack_temps.Push(temp + tempCount);
                             tempCount++; idTemporal++; idSimbolo++;
-                            temporales.Add(new Temporal(temp + tempCount, "0", idTemporal));
+                            temporales.Add(new Temporal(temp + tempCount, "0", idTemporal,"int"));
                             Simbolos.Add(new Simbolo(temp + tempCount, valorInicial.ToString(), idSimbolo));
                             stack_temps.Push(temp + tempCount);
 
-                            stack_cuadruplo.First().RANGO.Insert(0, idCuadruplo);
+                            if (stack_cuadruplo.Count > 0)
+                            {
+                                stack_cuadruplo.First().RANGO.Insert(0, idCuadruplo);
+                            }
                             idTemporal++;
                             idSimbolo++;
                             idCuadruplo++;
@@ -1654,6 +1906,10 @@ namespace Compiladores
                             Cuadruplos.Add(new Cuadruplo(OPERADOR, OPERANDO1, OPERANDO2, stack_temps.Pop(), idCuadruplo));
                            // if (stack_cuadruplo.Count > 0)
                            // {
+                            if(stack_cuadruplo.Last().OPERADOR=="if")
+                            {
+                                stack_cuadruplo.First().RANGO.Insert(0,-1);
+                            }
                                 stack_cuadruplo.First().RANGO.Insert(0, idCuadruplo);
                            // }
                             idCuadruplo++;

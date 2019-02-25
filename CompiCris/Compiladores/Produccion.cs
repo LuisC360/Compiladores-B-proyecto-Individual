@@ -8,9 +8,7 @@ namespace Compiladores
 {
     class Produccion
     {
-        // Una lista de no terminales, la cual representa una lista de tokens de la gramatica.
         public List<NT> ltok;
-        // El numero de la producción en la lista de producciones.
         public int numero;
 
         public Produccion()
@@ -32,7 +30,7 @@ namespace Compiladores
             }
         }
 
-        // Metodo para crear una cadena de tokens.
+        //Metodo para crear una cadena de tokens.
         public bool creaCadena(string cadenaEntrada, CTK cajaTokens)
         {
             foreach (var aux in cadenaEntrada.Replace("\t","").Split(' '))
@@ -48,7 +46,7 @@ namespace Compiladores
             return true;
         }
 
-        // Metodo para verificar si un simbolo existe
+        //Metodo para verificar si un simbolo existe
         public bool existes(string cad, CTK centrada)
         {
             NT n;
@@ -88,7 +86,7 @@ namespace Compiladores
             });
         }
 
-        // Metodo para crear la lista de tokens
+        //Metodo para crear lista de tokens
         public bool crealistok(string centr, CTK contoks)
         {
             int tipo = 0;
@@ -164,19 +162,19 @@ namespace Compiladores
             return tipo == 0;
         }
 
-        // Este metodo agrega un Token al inicio de la lista de la Produccion.
+        //Este metodo agrega un Token al inicio de la lista de la Produccion.
         public void agregarprim(NT tk)
         {
             ltok.Insert(0, tk);
         }
 
-        // Este metodo agrega un Token al final de la lista de la Produccion.
+        //Este metodo agrega un Token al final de la lista de la Produccion.
         public void agregarult(NT tk)
         {
             ltok.Add(tk);
         }
 
-        // Este metodo elimina el primer Token en la lista de la Produccion.
+        /// Este metodo elimina el primer Token en la lista de la Produccion.
         public NT eliminaprim()
         {
             NT tk = null;
@@ -188,7 +186,7 @@ namespace Compiladores
             return tk;
         }
 
-        // Este metodo verifica que todos los tokens esten en la lista.
+        //Este metodo verifica que todos los tokens esten en la lista.
         public bool verificaexist(List<NT> lista)
         {
             if (lista.Count != ltok.Count)
@@ -201,7 +199,7 @@ namespace Compiladores
             return true;
         }
 
-        // Metodo que busca Tokens no terminales en la Produccion.
+        //Metodo que busca Tokens NoTerminales en la Produccion.
         public bool snt()
         {
             foreach (NT token in ltok)
@@ -212,7 +210,7 @@ namespace Compiladores
             return false;
         }
 
-        // Este metodo verifica la existencia del simbolo (ε) en la Produccion.
+        /// Este metodo verifica la existencia del simbolo (ε) en la Produccion.
         public bool seps()
         {
             foreach (NT token in ltok)
@@ -223,7 +221,6 @@ namespace Compiladores
             return false;
         }
 
-        // Este metodo verifica si se tiene una producción que solamente produce epsilon.
         public bool epsnovalido()
         {
             if (ltok.Count > 1)
@@ -237,13 +234,13 @@ namespace Compiladores
             return false;
         }
 
-        // Este metodo elimina un Toquen de la Produccion.
+        /// Este metodo elimina un Toquen de la Produccion.
         public void removertk(NT tk)
         {
             ltok.Remove(tk);
         }
 
-        // Este metodo quita todos aquellos Tokens de la Produccion que coincidan en nombre con el string que pasa como parametro.
+        /// Este metodo quita todos aquellos Tokens de la Produccion que coincidan en nombre con el string que pasa como parametro.
         public void quitatks(string cad)
         {
             for(int num = 0; num< ltok.Count;)
@@ -256,7 +253,7 @@ namespace Compiladores
             }
         }
 
-        // Este metodo agrega un conjunto de Tokens a la produccion de Primero.
+        /// Este metodo agrega un conjunto de Tokens a la produccion de Primero.
         public bool agconjunto(List<NT> aux)
         {
             bool b1;
@@ -281,7 +278,7 @@ namespace Compiladores
             return b2;
         }
 
-        // Este metodo agrega un Token a la produccion de Primero.
+        /// Este metodo agrega un Token a la produccion de Primero.
         public bool agregatkprim(NT tk)
         {
             bool b = true;
@@ -298,7 +295,7 @@ namespace Compiladores
             return b;
         }
 
-        // Este metodo remplaza una sucesion de Tokens de la lista de la produccion por otra sucesion diferente de Tokens.
+        /// Este metodo remplaza una sucesion de Tokens de la lista de la produccion por otra sucesion diferente de Tokens.
         public void remplazatks(List<NT> original, List<NT> remplazo)
         {
             Queue<NT> iz = new Queue<NT>();
@@ -342,7 +339,7 @@ namespace Compiladores
             }
         }
 
-        // Este metodo compara si esta Produccion es igual a otra Produccion.
+        /// Este metodo compara si esta Produccion es igual a otra Produccion.
         public bool comparaprod(Produccion prec)
         {
             int aux = 0;

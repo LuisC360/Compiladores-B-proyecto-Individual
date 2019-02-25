@@ -18,7 +18,7 @@ namespace Compiladores
                     variable = new Int32();
                     break;
                 case "label":
-                    variable = new Label(id, "id", 0, 0);
+                    variable = new Label();
                     break;
                 case "textBox":
                     variable = new TextBox();

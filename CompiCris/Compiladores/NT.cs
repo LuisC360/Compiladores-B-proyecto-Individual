@@ -8,6 +8,7 @@ namespace Compiladores
 {
     class NT
     {
+
         public string valex;
         //Es el nombre del terminal o no terminal
         public string nom;
